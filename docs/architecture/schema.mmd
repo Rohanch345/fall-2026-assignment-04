@@ -1,0 +1,57 @@
+erDiagram
+    USERS {
+        int id PK
+        varchar email UK
+        varchar name
+        timestamp created_at
+    }
+    BORROWERS {
+        int id PK
+        int user_id FK, UK
+        varchar card_number UK
+        varchar phone
+        date membership_expires_on
+        timestamp created_at
+    }
+    GENRES {
+        int id PK
+        varchar name UK
+        text description
+        timestamp created_at
+    }
+    AUTHORS {
+        int id PK
+        varchar first_name
+        varchar last_name
+        text bio
+        timestamp created_at
+    }
+    BOOKS {
+        int id PK
+        int genre_id FK
+        varchar isbn UK
+        varchar title
+        int published_year
+        int total_copies
+        timestamp created_at
+    }
+    BOOK_AUTHORS {
+        int book_id PK, FK
+        int author_id PK, FK
+    }
+    LOANS {
+        int id PK
+        int borrower_id FK
+        int book_id FK
+        date loaned_on
+        date due_on
+        date returned_on "nullable"
+        timestamp created_at
+    }
+
+    USERS ||--o| BORROWERS : "has profile"
+    GENRES ||--o{ BOOKS : "categorizes"
+    BOOKS ||--o{ BOOK_AUTHORS : "written by"
+    AUTHORS ||--o{ BOOK_AUTHORS : "writes"
+    BORROWERS ||--o{ LOANS : "borrows"
+    BOOKS ||--o{ LOANS : "is loaned in"
